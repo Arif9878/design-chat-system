@@ -1,0 +1,50 @@
+flowchart TD
+    Client["Clients (Mobile/Web)"] 
+    Gateway["API Gateway"] 
+    Auth["Authentication Service"]
+    MessageService["Message Service"]
+    Kafka["Kafka (Message Queue)"]
+    MongoDB["MongoDB (Messages Storage)"]
+    PostgreSQL["PostgreSQL (User Metadata)"]
+    HistoryService["Chat History Service"]
+    Redis["Redis Cache"]
+    Notification["Notification Service"]
+
+    subgraph Clients
+        Client1["User A - Web App"]
+        Client2["User B - Mobile App"]
+    end
+
+    Client1 -- WebSocket / REST --> Gateway
+    Client2 -- WebSocket / REST --> Gateway
+    Gateway -- REST --> Auth
+    Gateway -- WebSocket --> MessageService
+
+    Auth -- Validate Token --> Gateway
+
+    MessageService -- Send Message Event --> Kafka
+    Kafka -- Distribute Messages --> MessageService
+    Kafka -- Store Messages --> MongoDB
+
+    MessageService -- Fetch User Data --> PostgreSQL
+    MessageService -- Update Cache --> Redis
+    MessageService -- Push Notification --> Notification
+
+    HistoryService -- Query Message History --> MongoDB
+    HistoryService -- Paginated Results --> Gateway
+
+    subgraph Storage
+        MongoDB
+        PostgreSQL
+        Redis
+    end
+
+    subgraph Backend
+        Auth
+        MessageService
+        HistoryService
+        Notification
+        Kafka
+    end
+
+    Redis -- Cached Messages --> HistoryService
