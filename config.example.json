@@ -1,0 +1,29 @@
+{
+    "postgresql": {
+        "primary": {
+            "dbname": "",
+            "host": "",
+            "max-idle-connection": 5,
+            "max-idle-time": 600,
+            "max-open-connection": 10,
+            "password": "",
+            "port": "",
+            "username": ""
+        },
+        "standby": {
+            "dbname": "",
+            "host": "",
+            "max-idle-connection": 5,
+            "max-idle-time": 600,
+            "max-open-connection": 10,
+            "password": "",
+            "port": "",
+            "username": ""
+        }
+    },
+    "scylladb": {
+        "hosts": [""],
+        "keyspace": "",
+        "consistency": ""
+    }
+}

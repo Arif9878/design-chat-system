@@ -1,0 +1,35 @@
+version: "3.8"
+services:
+  postgres:
+    platform: linux/x86_64
+    container_name: postgresql-chat
+    image: postgres:15.4-alpine
+    restart: unless-stopped
+    environment:
+        POSTGRES_USER: root
+        POSTGRES_PASSWORD: root
+        POSTGRES_DB: mydb
+    volumes:
+        - ./data/postgres:/var/lib/postgresql/data
+    ports:
+        - "5432:5432"
+
+  scylla:
+    image: mirror.gcr.io/scylladb/scylla:latest
+    container_name: scylladb-chat
+    restart: always
+    volumes:
+      - ./data/scylla:/var/lib/scylla
+    ports:
+      - "9042:9042"
+
+  redis:
+      platform: linux/x86_64
+      restart: unless-stopped
+      image : redis:latest
+      container_name: redis-chat
+      cpus: 0.2
+      mem_limit: 150m
+      mem_reservation: 50m
+      ports:
+          - 6379:6379

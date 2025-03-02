@@ -1,0 +1,86 @@
+# This specifies the configuration file version.
+#
+# This controls the configuration file layout, defaults, and lint/breaking
+# rules and rule categories. Buf takes breaking changes seriously in
+# all aspects, and none of these will ever change for a given version.
+#
+# The only valid versions are "v1beta1", "v1".
+# This key is required.
+version: v2
+modules:
+  - path: go/grpc-uberfx/proto
+    # name is the module name.
+    name: buf.build/Arif9878/design-chat-system
+
+# deps are the module dependencies
+deps:
+  - buf.build/grpc-ecosystem/grpc-gateway
+  - buf.build/googleapis/googleapis
+
+# lint contains the options for lint rules.
+lint:
+  # use is the list of rule categories and ids to use for buf lint.
+  #
+  # Categories are sets of rule ids.
+  # Run buf config ls-lint-rules --all to get a list of all rules.
+  #
+  # The union of the categories and ids will be used.
+  #
+  # The default is [DEFAULT].
+  use:
+    - DEFAULT
+    - PACKAGE_NO_IMPORT_CYCLE
+
+  # rpc_allow_google_protobuf_empty_requests affects the behavior of the
+  # RPC_REQUEST_STANDARD_NAME and RPC_REQUEST_RESPONSE_UNIQUE rules.
+  #
+  # This will result in google.protobuf.Empty requests being ignored for
+  # RPC_REQUEST_STANDARD_NAME, and google.protobuf.Empty requests being allowed
+  # in multiple RPCs.
+  rpc_allow_google_protobuf_empty_requests: true
+
+  # rpc_allow_google_protobuf_empty_responses affects the behavior of the
+  # RPC_RESPONSE_STANDARD_NAME and the RPC_REQUEST_RESPONSE_UNIQUE rules.
+  #
+  # This will result in google.protobuf.Empty responses being ignored for
+  # RPC_RESPONSE_STANDARD_NAME, and google.protobuf.Empty responses being
+  # allowed in multiple RPCs.
+  rpc_allow_google_protobuf_empty_responses: true
+
+# breaking contains the options for breaking rules.
+breaking:
+  # use is the list of rule categories and ids to use for
+  # buf breaking.
+  #
+  # Categories are sets of rule ids.
+  # Run buf config ls-breaking-rules --all to get a list of all rules.
+  #
+  # The union of the categories and ids will be used.
+  #
+  # As opposed to lint, where you may want to do more customization, with
+  # breaking is is generally better to only choose one of the following
+  # options:
+  #
+  # - [FILE]
+  # - [PACKAGE]
+  # - [WIRE]
+  # - [WIRE_JSON]
+  #
+  # The default is [FILE].
+  use:
+    - WIRE_JSON
+
+  # ignore_unstable_packages results in ignoring packages with a last component
+  # that is one of the unstable forms recognized by the "PACKAGE_VERSION_SUFFIX"
+  # lint rule. The following forms will be ignored:
+  #
+  # - v\d+test.*
+  # - v\d+(alpha|beta)\d+
+  # - v\d+p\d+(alpha|beta)\d+
+  #
+  # For example, if this option is set, the following packages will be ignored:
+  #
+  # - foo.bar.v1alpha1
+  # - foo.bar.v1beta1
+  # - foo.bar.v1test
+  ignore_unstable_packages: true
