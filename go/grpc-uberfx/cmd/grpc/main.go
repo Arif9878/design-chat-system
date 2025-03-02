@@ -9,11 +9,11 @@ import (
 	"go.uber.org/zap"
 	"google.golang.org/grpc"
 
+	protoHello "github.com/Arif9878/design-chat-system/go/gen/hello"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/cmd/initialize"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/internal/config"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/internal/logging"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/internal/middleware"
-	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/proto"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/service"
 	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/transport"
 )
@@ -23,7 +23,7 @@ func NewGRPCServer(lc fx.Lifecycle, svc service.Service, logger *zap.Logger) *gr
 	server := grpc.NewServer(
 		grpc.ChainUnaryInterceptor(middleware.LoggingUnaryInterceptor(logger)),
 	)
-	proto.RegisterHelloServiceServer(server, transport.NewGRPCServer(svc, logger))
+	protoHello.RegisterHelloServiceServer(server, transport.NewGRPCServer(svc, logger))
 
 	lc.Append(fx.Hook{
 		OnStart: func(ctx context.Context) error {

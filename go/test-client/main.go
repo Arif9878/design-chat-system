@@ -8,7 +8,7 @@ import (
 
 	"google.golang.org/grpc"
 
-	"github.com/Arif9878/design-chat-system/go/grpc-uberfx/proto"
+	protoHello "github.com/Arif9878/design-chat-system/go/gen/hello"
 )
 
 func main() {
@@ -18,12 +18,12 @@ func main() {
 	}
 	defer conn.Close()
 
-	client := proto.NewHelloServiceClient(conn)
+	client := protoHello.NewHelloServiceClient(conn)
 
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 
-	res, err := client.SayHello(ctx, &proto.HelloRequest{Name: "GoKit"})
+	res, err := client.SayHello(ctx, &protoHello.HelloRequest{Name: "GoKit"})
 	if err != nil {
 		log.Fatalf("Could not greet: %v", err)
 	}
